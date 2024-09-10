@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #e8f3db; /* Updated color */
         }
         .navbar {
             display: flex;
@@ -20,9 +20,17 @@
             padding: 15px;
             text-align: center;
         }
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
         .navbar .title {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 1.5em;
+            margin: 0; /* Remove any default margin */
+            padding: 30px;
         }
         .navbar a {
             color: white;
@@ -35,10 +43,19 @@
             background-color: #ddd;
             color: black;
         }
-        .navbar .links {
-            display: flex;
-            align-items: center;
+        .links {
+            margin-left: auto; /* Pushes the links to the right */
         }
+        .navbar-photo {
+            width: 70px; /* Adjust size as needed */
+            height: 70px; /* Adjust size as needed */
+            border-radius: 50%; /* Makes the photo circular */
+            background-image: url('img/IMG_TEJAS.png'); /* Replace with your photo path */
+            background-size: cover;
+            background-position: center;
+            margin-right: 2px; /* Space between photo and title */
+        }
+        
         .calendar-popup {
             display: none;
             position: absolute;
@@ -57,7 +74,12 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .navbar a.book:hover .calendar-popup {
+        .navbar{
+            display: flex;
+            align-items: center; /* Aligns items vertically */
+            margin-bottom: 20px;
+        }
+        .book-appointment-link:hover .calendar-popup {
             display: block;
         }
         .container {
@@ -69,6 +91,9 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
+        }
+        .photo-grid.four-columns {
+            grid-template-columns: repeat(4, 1fr);
         }
         .photo-item {
             background-color: #fff;
@@ -90,54 +115,238 @@
             color: #555;
             text-align: center;
         }
+        .article, .hobbies-container {
+            display: none;
+        }
+        .article.show{
+            display: block;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h3 {
+            text-align: center;
+            color: #555;
+            margin-bottom: 40px;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        em {
+            font-style: italic;
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .hobbies-container.show{
+            display: block;
+        }
+        .resume-link {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .grid-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .grid-buttons button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        .grid-buttons button:hover {
+            background-color: #555;
+        }
+
+        /* Modal styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .image-modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #f1f1f1;
+            font-size: 35px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <div class="title">Inevitableclicks</div>
+        <div class="navbar-photo"></div> 
+        <div id="navbar-title" class="title">Tejas Aher's Blog</div>
         <div class="links">
-            <a href="index.html">Home</a>
-            <a href="#book" class="book">Book your appointment
+            <a href="#" id="home-link">Home</a>
+            <a href="#book" id="book-appointment-link" class="book-appointment-link">Book Appointment
                 <div class="calendar-popup">
                     <input type="date" id="appointment-date" name="appointment-date">
                 </div>
             </a>
             <a href="#login">Login</a>
             <a href="#about">About</a>
+            <a href="#" id="hobbies-link">Hobbies</a>
         </div>
     </div>
-    
-    <div class="container">
+
+    <div id="article" class="container article show">
+        <h1>My first step to the open-source learning</h1>
+        <h3>Skills - Snowflake , DBT, Dagster, Airflow, Python</h3>
+        <p>As a Lead Data Engineer, I have a deep expertise in building and optimizing data workflows that power critical business decisions.</p>
+        <ul>
+            <li>Worked with cloud based data warehousing solutions like Snowflake, Redshift, where I have successfully designed and implemented scalable solutions for data storage, processing, and transformation.</li>
+            <li>excel in deploying microservice applications using cloud services, leveraging services like AWS S3 and Lambda to create robust, efficient architectures.</li>
+            <li>My proficiency extends to orchestrating complex data workflows using Python-supported ETL tools such as Dagster (Airflow), Meltano, and DBT.</li>
+        </ul>
+        <div class="divider"></div>
+        <p><em>Someone has said, "केल्याने होत आहे रे। आधी केलेची पाहिजे ।।" - Unknown. </em> </p>
+        <div class="divider"></div>
+        <p>I have worked on multiple opensource projects and I want to share the some projects with people around the globe. I believe opensource contribution is best way to do it.</p>
+        <div class="divider"></div>
+        <ul>
+            <li>Learning the best coding practices.</li>
+            <li>Reading/Writing great documentation.</li>
+            <li>It helps build your resume.</li>
+            <li>I have interviewed a lot of candidates for job roles...</li>
+            <li>It’s a great way to stand out from the crowd.</li>
+            <li>Get peer recognition in the software dev community.</li>
+            <li>With a bursting ecosystem of the open source software community...</li>
+            <li>Empowerment of individuals is a key part of what makes open source work...</li>
+        </ul>
+        <p>This is just the beginning, with more progress to follow.</p>
+
+        <p>Please find attached resume for any career opportunities.</p>
+
+        <!-- PDF Resume Link -->
+        <div class="resume-link">
+            <a href="img/Tejas_Aher_Resume.pdf" target="_blank">Download my Resume (PDF)</a>
+        </div>
+
+    </div>
+
+    <div id="hobbies-container" class="container hobbies-container">
+        <div class="grid-buttons">
+            <button id="two-columns-btn">2 Columns</button>
+            <button id="four-columns-btn">4 Columns</button>
+        </div>
         <div class="photo-grid">
-            <!-- Image 1 -->
             <div class="photo-item">
-                <img src="img/IMG_20191017_174020_815.jpg" alt="Photo 1">
-                <div class="description">
-                    Rubic cube - Randomly clicked at Vetal Hills Pune.
-                </div>
+                <img src="img/IMG_20191017_174020_815.jpg" alt="Photo 1" class="photo" onclick="openModal(this)">
+                <div class="description"> Rubic cube - Randomly clicked at Vetal Hills Pune.</div>
             </div>
-            <!-- Image 2 -->
             <div class="photo-item">
-                <img src="img/IMG_20201228_200232_421.jpg" alt="Photo 2">
-                <div class="description">
-                    Amazing Sunset - Nashik
-                </div>
+                <img src="img/IMG_20201228_200232_421.jpg" alt="Photo 2" class="photo" onclick="openModal(this)">
+                <div class="description">Amazing Sunset - Nashik</div>
             </div>
-            <!-- Image 3 -->
             <div class="photo-item">
-                <img src="img/IMG_20210513_193751_086.jpg" alt="Photo 3">
-                <div class="description">
-                    Sweet Home - Nashik
-                </div>
+                <img src="img/IMG_20210513_193751_086.jpg" alt="Photo 2" class="photo" onclick="openModal(this)">
+                <div class="description">Nature's Painting - Nashik</div>
             </div>
-            <!-- Image 4 -->
             <div class="photo-item">
-                <img src="img/IMG_20210518_235355_178.jpg" alt="Photo 4">
-                <div class="description">
-                    The Moon - Dekho chand tod ke laya hu !!
-                </div>
+                <img src="img/IMG_20210518_235355_178.jpg" alt="Photo 2" class="photo" onclick="openModal(this)">
+                <div class="description">The Moon - देखो चांद तोड के लाया हू !!</div>
             </div>
         </div>
     </div>
+    <!-- Modal for enlarged images -->
+    <div id="image-modal" class="image-modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="image-modal-content" id="modal-image">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeLink = document.getElementById('home-link');
+            const hobbiesLink = document.getElementById('hobbies-link');
+            const article = document.getElementById('article');
+            const hobbiesContainer = document.getElementById('hobbies-container');
+            const navbarTitle = document.getElementById('navbar-title');
+            const photoGrid = document.getElementById('photo-grid');
+            const twoColumnsBtn = document.getElementById('two-columns-btn');
+            const fourColumnsBtn = document.getElementById('four-columns-btn');
+            const bookAppointmentLink = document.getElementById('book-appointment-link');
+
+            // Show article by default
+            article.classList.add('show');
+            hobbiesContainer.classList.remove('show');
+            bookAppointmentLink.style.display = 'none'; // Hide by default
+
+            homeLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                article.classList.add('show');
+                hobbiesContainer.classList.remove('show');
+                navbarTitle.textContent = "Tejas Aher's Blog"; // Reset title
+                bookAppointmentLink.style.display = 'none'; // Hide Book Appointment
+            });
+
+            hobbiesLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                article.classList.remove('show');
+                hobbiesContainer.classList.add('show');
+                navbarTitle.textContent = 'Inevitableclicks'; // Update title
+                bookAppointmentLink.style.display = 'inline-block'; // Show Book Appointment
+            });
+
+            document.getElementById('two-columns-btn').addEventListener('click', function() {
+                document.querySelector('.photo-grid').classList.remove('four-columns');
+            });
+            document.getElementById('four-columns-btn').addEventListener('click', function() {
+                document.querySelector('.photo-grid').classList.add('four-columns');
+            });
+        });
+        function openModal(img) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = "none";
+        }
+    </script>
 </body>
 </html>
+
